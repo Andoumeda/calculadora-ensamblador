@@ -60,6 +60,12 @@ calcular:
     cmp bh, 'S'
     je sumatoria
     
+    cmp bh, 'f'
+    je factorial
+    
+    cmp bh, 'F'
+    je factorial
+    
     ret
 
 sumar:
@@ -150,6 +156,29 @@ sumatoriaLoop:
     call sumar
     dec bl
     loop sumatoriaLoop
+    
+    pop cx
+    ret
+
+factorial:
+    push cx
+    
+    mov al, bl
+    cmp bl, 0
+    je resultadoUno
+    
+    dec bl
+    cmp bl, 0
+    je resultadoUno
+    
+    mov ch, 0
+    mov cl, bl
+    dec cl
+
+factorialLoop:
+    call multiplicar
+    dec bl
+    loop factorialLoop
     
     pop cx
     ret
