@@ -48,6 +48,12 @@ calcular:
     cmp bh, '/'
     je dividir
     
+    cmp bh, 'p'
+    je potencia
+    
+    cmp bh, 'P'
+    je potencia
+    
     ret
 
 sumar:
@@ -60,6 +66,8 @@ restar:
     ret
 
 multiplicar:
+    push cx
+    
     mov ch, 0
     mov cl, al
     mov al, bl
@@ -74,9 +82,13 @@ multiplicar:
 multiplicarLoop:
     call sumar
     loop multiplicarLoop
+    
+    pop cx
     ret
 
 dividir:
+    push cx
+    
     mov cl, 0
     
     cmp bl, 0
@@ -90,13 +102,42 @@ dividirLoop:
     jg dividirLoop
     
     mov al, cl
+    pop cx
+    ret
+
+potencia:
+    push cx
+    
+    mov ch, 0
+    mov cl, al
+    mov al, bl
+    
+    cmp cl, 0
+    je resultadoUno
+    
+    dec cl
+    cmp cl, 0
+    je retornar
+
+potenciaLoop:
+    call multiplicar
+    loop potenciaLoop
+    
+    pop cx
     ret
 
 retornar:
+    pop cx
     ret
 
 resultadoCero:
     mov al, 0
+    pop cx
+    ret
+
+resultadoUno:
+    mov al, 1
+    pop cx
     ret
 
 leerNum2Digitos:
