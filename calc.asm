@@ -54,6 +54,12 @@ calcular:
     cmp bh, 'P'
     je potencia
     
+    cmp bh, 's'
+    je sumatoria
+    
+    cmp bh, 'S'
+    je sumatoria
+    
     ret
 
 sumar:
@@ -122,6 +128,28 @@ potencia:
 potenciaLoop:
     call multiplicar
     loop potenciaLoop
+    
+    pop cx
+    ret
+
+sumatoria:
+    push cx
+    
+    mov al, bl
+    cmp bl, 0
+    je resultadoCero
+    
+    dec bl
+    cmp bl, 0
+    je resultadoUno
+    
+    mov ch, 0
+    mov cl, bl
+
+sumatoriaLoop:
+    call sumar
+    dec bl
+    loop sumatoriaLoop
     
     pop cx
     ret
