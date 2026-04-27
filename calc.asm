@@ -39,6 +39,9 @@ calcular:
     cmp bh, '-'
     je restar
     
+    cmp bh, '*'
+    je multiplicar
+    
     ret
 
 sumar:
@@ -48,6 +51,30 @@ sumar:
 restar:
     sub bl, al
     mov al, bl
+    ret
+
+multiplicar:
+    mov ch, 0
+    mov cl, al
+    mov al, bl
+    
+    cmp cl, 0
+    je resultadoCero
+    
+    dec cl
+    cmp cl, 0
+    je retornar
+
+multiplicarLoop:
+    call sumar
+    loop multiplicarLoop
+    ret
+
+retornar:
+    ret
+
+resultadoCero:
+    mov al, 0
     ret
 
 leerNum2Digitos:
