@@ -8,12 +8,18 @@
     msjNum db CR, LF, "Ingrese un numero de 2 digitos: $"
     msjOpe db CR, LF, "Ingrese operacion: $"
     msjResult db CR, LF, "Resultado: $"
+    msjBucle db CR, LF, "Desea continuar? Presione E para salir: $"
 
 .code
 start:
     mov ax, @data
     mov ds, ax
     
+    call startLoop
+    
+    call finish
+    
+startLoop:
     mov dx, offset msjNum
     call puts
     call leerNum2Digitos
@@ -33,8 +39,15 @@ start:
     call calcular
     call imprimirNum2Digitos
     
-    call finish
+    mov dx, offset msjBucle
+    call puts
+    call getc
     
+    cmp al, 'E'
+    jne startLoop
+    
+    ret
+
 calcular:
     cmp bh, '+'
     je sumar
