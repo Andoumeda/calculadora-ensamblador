@@ -2,9 +2,12 @@
 .stack 100h
 
 .data
-    msjNum db 13, 10, "Ingrese un numero de 2 digitos: $"
-    msjOpe db 13, 10, "Ingrese operacion: $"
-    msjResult db 13, 10, "Resultado: $"
+    CR equ 13
+    LF equ 10
+    
+    msjNum db CR, LF, "Ingrese un numero de 2 digitos: $"
+    msjOpe db CR, LF, "Ingrese operacion: $"
+    msjResult db CR, LF, "Resultado: $"
 
 .code
 start:
@@ -42,6 +45,9 @@ calcular:
     cmp bh, '*'
     je multiplicar
     
+    cmp bh, '/'
+    je dividir
+    
     ret
 
 sumar:
@@ -68,6 +74,22 @@ multiplicar:
 multiplicarLoop:
     call sumar
     loop multiplicarLoop
+    ret
+
+dividir:
+    mov cl, 0
+    
+    cmp bl, 0
+    je resultadoCero
+
+dividirLoop:
+    sub bl, al
+    inc cl
+    
+    cmp bl, 0
+    jg dividirLoop
+    
+    mov al, cl
     ret
 
 retornar:
