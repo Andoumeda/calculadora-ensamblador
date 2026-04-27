@@ -2,41 +2,55 @@
 .stack 100h
 
 .data
-    msgInput db 13, 10, "Ingrese un numero de 2 digitos: $"
-    msgOpe db 13, 10, "Ingrese operacion: $"
-    msgResult db 13, 10, "Resultado: $"
+    msjNum db 13, 10, "Ingrese un numero de 2 digitos: $"
+    msjOpe db 13, 10, "Ingrese operacion: $"
+    msjResult db 13, 10, "Resultado: $"
 
 .code
 start:
     mov ax, @data
     mov ds, ax
     
-    mov dx, offset msgInput
+    mov dx, offset msjNum
     call puts
-    call get2DigitNum
+    call leerNum2Digitos
     mov bl, al
     
-    mov dx, offset msgOpe
+    mov dx, offset msjOpe
     call puts
     call getc
     mov bh, al
     
-    mov dx, offset msgInput
+    mov dx, offset msjNum
     call puts
-    call get2DigitNum
+    call leerNum2Digitos
     
-    mov dx, offset msgResult
+    mov dx, offset msjResult
     call puts
-    call print2DigitNum
-    
-    mov dx, offset msgResult
-    call puts
-    mov al, bl
-    call print2DigitNum
+    call calcular
+    call imprimirNum2Digitos
     
     call finish
     
-get2DigitNum:
+calcular:
+    cmp bh, '+'
+    je sumar
+    
+    cmp bh, '-'
+    je restar
+    
+    ret
+
+sumar:
+    add al, bl
+    ret
+
+restar:
+    sub bl, al
+    mov al, bl
+    ret
+
+leerNum2Digitos:
     push bx
     
     call getc
@@ -54,7 +68,7 @@ get2DigitNum:
     pop bx
     ret
     
-print2DigitNum:
+imprimirNum2Digitos:
     push ax
     push dx
     
